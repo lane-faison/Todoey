@@ -11,10 +11,9 @@ import CoreData
 
 class ToDoListViewController: UITableViewController {
     
-     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-    let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Items.plist")
+    private let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
-    var itemArray = [Item]()
+    private var itemArray = [Item]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,7 +30,6 @@ class ToDoListViewController: UITableViewController {
         let addAction = UIAlertAction(title: "Add Item", style: .default) { (action) in
             guard let title = textField.text else { return }
             
-           
             let newItem = Item(context: self.context)
             newItem.title = title
             newItem.done = false
@@ -50,13 +48,11 @@ class ToDoListViewController: UITableViewController {
     }
     
     private func saveItems() {
-        
         do {
             try context.save()
         } catch {
             print("Error saving context: \(error)")
         }
-        
         self.tableView.reloadData()
     }
     
@@ -87,8 +83,8 @@ extension ToDoListViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-//        context.delete(itemArray[indexPath.row])
-//        itemArray.remove(at: indexPath.row)
+        //        context.delete(itemArray[indexPath.row])
+        //        itemArray.remove(at: indexPath.row)
         
         itemArray[indexPath.row].done = !itemArray[indexPath.row].done
         
