@@ -27,7 +27,7 @@ class ToDoListViewController: UITableViewController {
         
         let alertController = UIAlertController(title: "Add New Todoey Item", message: "", preferredStyle: .alert)
         
-        let addAction = UIAlertAction(title: "Add Item", style: .default) { (action) in
+        let addAction = UIAlertAction(title: "Add", style: .default) { (action) in
             guard let title = textField.text else { return }
             
             let newItem = Item(context: self.context)
@@ -45,24 +45,6 @@ class ToDoListViewController: UITableViewController {
         alertController.addAction(addAction)
         
         present(alertController, animated: true, completion: nil)
-    }
-    
-    private func saveItems() {
-        do {
-            try context.save()
-        } catch {
-            print("Error saving context: \(error)")
-        }
-        self.tableView.reloadData()
-    }
-    
-    private func loadItems(with request: NSFetchRequest<Item> = Item.fetchRequest()) {
-        do {
-            itemArray = try context.fetch(request)
-        } catch {
-            print("Error fetching data from context: \(error)")
-        }
-        tableView.reloadData()
     }
 }
 
@@ -114,5 +96,28 @@ extension ToDoListViewController: UISearchBarDelegate {
                 searchBar.resignFirstResponder()
             }
         }
+    }
+}
+
+// MARK: - Data Manipulation Methods
+
+extension ToDoListViewController {
+    
+    private func saveItems() {
+        do {
+            try context.save()
+        } catch {
+            print("Error saving context: \(error)")
+        }
+        self.tableView.reloadData()
+    }
+    
+    private func loadItems(with request: NSFetchRequest<Item> = Item.fetchRequest()) {
+        do {
+            itemArray = try context.fetch(request)
+        } catch {
+            print("Error fetching data from context: \(error)")
+        }
+        tableView.reloadData()
     }
 }

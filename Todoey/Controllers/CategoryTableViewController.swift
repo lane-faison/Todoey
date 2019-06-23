@@ -27,7 +27,7 @@ class CategoryTableViewController: UITableViewController {
         
         let alertController = UIAlertController(title: "Add New Category of To-Do Items", message: "", preferredStyle: .alert)
         
-        let addAction = UIAlertAction(title: "Add Category", style: .default) { (action) in
+        let addAction = UIAlertAction(title: "Add", style: .default) { (action) in
             guard let name = textField.text else { return }
             
             let newCategory = Category(context: self.context)
@@ -45,24 +45,6 @@ class CategoryTableViewController: UITableViewController {
         
         present(alertController, animated: true, completion: nil)
     }
-    
-    private func saveCategories() {
-        do {
-            try context.save()
-        } catch {
-            print("Error saving context: \(error)")
-        }
-        self.tableView.reloadData()
-    }
-    
-    private func loadCategories(with request: NSFetchRequest<Category> = Category.fetchRequest()) {
-        do {
-            categoryArray = try context.fetch(request)
-        } catch {
-            print("Error fetching from context: \(error)")
-        }
-        tableView.reloadData()
-    }
 }
 
 // MARK: - TableView Data Source Methods
@@ -79,7 +61,11 @@ extension CategoryTableViewController {
         
         return cell
     }
-    
+}
+
+// MARK: - TableView Delegate Methods
+
+extension CategoryTableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         performSegue(withIdentifier: "goToItems", sender: nil)
     }
@@ -93,14 +79,25 @@ extension CategoryTableViewController {
     }
 }
 
-// MARK: - TableView Delegate Methods
-
-extension CategoryTableViewController {
-    
-}
-
 // MARK: - Data Source Manipulation Methods
 
 extension CategoryTableViewController {
+    private func saveCategories() {
+        do {
+            try context.save()
+        } catch {
+            print("Error saving context: \(error)")
+        }
+        self.tableView.reloadData()
+    }
     
+    private func loadCategories() {
+        let request: NSFetchRequest<Category> = Category.fetchRequest()
+        do {
+            categoryArray = try context.fetch(request)
+        } catch {
+            print("Error fetching from context: \(error)")
+        }
+        tableView.reloadData()
+    }
 }
