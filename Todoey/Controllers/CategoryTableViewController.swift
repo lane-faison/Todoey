@@ -73,7 +73,9 @@ extension CategoryTableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "goToItems" {
             if let destinationVC = segue.destination as? ToDoListViewController {
-                
+                if let indexPath = tableView.indexPathForSelectedRow {
+                    destinationVC.selectedCategory = categoryArray[indexPath.row]
+                }
             }
         }
     }
