@@ -25,7 +25,7 @@ class CategoryTableViewController: UITableViewController {
         
         var textField = UITextField()
         
-        let alertController = UIAlertController(title: "Add New Category of To-Do Items", message: "", preferredStyle: .alert)
+        let alertController = UIAlertController(title: "Add New Category", message: "", preferredStyle: .alert)
         
         let addAction = UIAlertAction(title: "Add", style: .default) { (action) in
             guard let name = textField.text else { return }
@@ -36,11 +36,12 @@ class CategoryTableViewController: UITableViewController {
             self.save(category: newCategory)
         }
         
+        alertController.addAction(addAction)
+        
         alertController.addTextField { (alertTextField) in
-            alertTextField.placeholder = "Create new category"
+            alertTextField.placeholder = "Add a new category"
             textField = alertTextField
         }
-        alertController.addAction(addAction)
         
         present(alertController, animated: true, completion: nil)
     }
@@ -64,6 +65,7 @@ extension CategoryTableViewController {
 // MARK: - TableView Delegate Methods
 
 extension CategoryTableViewController {
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         performSegue(withIdentifier: "goToItems", sender: nil)
     }
