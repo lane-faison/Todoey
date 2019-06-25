@@ -24,6 +24,7 @@ class ToDoListViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        tableView.rowHeight = 80.0
     }
     
     @IBAction func addButtonTapped(_ sender: UIBarButtonItem) {
