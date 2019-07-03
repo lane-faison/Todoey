@@ -19,7 +19,15 @@ class CategoryTableViewController: SwipeTableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        navigationController?.navigationBar.tintColor = FlatWhite()
+        
         loadCategories()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: FlatWhite()]
     }
     
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
@@ -60,7 +68,11 @@ extension CategoryTableViewController {
         
         if let category = categories?[indexPath.row] {
             cell.textLabel?.text = category.name
-            cell.backgroundColor = UIColor(hexString: category.backgroundHex)
+            
+            guard let hexColor = UIColor(hexString: category.backgroundHex) else { fatalError() }
+            
+            cell.backgroundColor = hexColor
+            cell.textLabel?.textColor = ContrastColorOf(hexColor, returnFlat: true)
         }
         
         return cell

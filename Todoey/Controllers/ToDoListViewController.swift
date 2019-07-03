@@ -12,6 +12,8 @@ import ChameleonFramework
 
 class ToDoListViewController: SwipeTableViewController {
     
+    @IBOutlet weak var searchBar: UISearchBar!
+    
     let realm = try! Realm()
     
     private var items: Results<Item>?
@@ -24,7 +26,32 @@ class ToDoListViewController: SwipeTableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
+        title = selectedCategory?.name
+        
+        guard let hexString = selectedCategory?.backgroundHex else { fatalError() }
+        
+        updateNavBar(withHexCode: hexString)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        updateNavBar(withHexCode: "1D9BF6")
+    }
+    
+    private func updateNavBar(withHexCode hexCodeString: String) {
+        guard let navBar = navigationController?.navigationBar,
+            let color = UIColor(hexString: hexCodeString) else { fatalError() }
+        
+        navBar.barTintColor = color // background color
+        navBar.tintColor = ContrastColorOf(color, returnFlat: true) // icon color
+        navBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: ContrastColorOf(color, returnFlat: true)]
+        searchBar.barTintColor = color
     }
     
     @IBAction func addButtonTapped(_ sender: UIBarButtonItem) {
